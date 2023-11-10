@@ -11,7 +11,7 @@ using Marian_Catalina_Lab2.Models;
 
 namespace Marian_Catalina_Lab2.Pages.Books
 {
-    public class EditModel : PageModel
+    public class EditModel : BookCategoriesPageModel
     {
         private readonly Marian_Catalina_Lab2.Data.Marian_Catalina_Lab2Context _context;
 

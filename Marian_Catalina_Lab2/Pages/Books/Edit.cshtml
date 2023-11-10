@@ -1,5 +1,4 @@
-﻿
-@page
+﻿@page
 @model Marian_Catalina_Lab2.Pages.Books.EditModel
 
 @{
@@ -8,13 +7,10 @@
 
 <h1>Edit</h1>
 
-<h4>Book</h4>
-<hr />
-<div class="row">
+<h4>Book</h4><div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Book.ID" />
             <div class="form-group">
                 <label asp-for="Book.Title" class="control-label"></label>
                 <input asp-for="Book.Title" class="form-control" />
@@ -33,51 +29,52 @@
             <div class="form-group">
                 <label asp-for="Book.PublishingDate" class="control-label"></label>
                 <input asp-for="Book.PublishingDate" class="form-control" />
-                <span asp-validation-for="Book.PublishingDate" class="textdanger"></span>
+                <span asp-validation-for="Book.PublishingDate" class="text-danger"></span>
             </div>
-           <div class="form-group">
- <label asp-for="Book.PublisherID" class="control-label"></label>
- <select asp-for="Book.PublisherID" class="form-control" aspitems="ViewBag.PublisherID"></select>
- <span asp-validation-for="Book.PublisherID" class="text-danger"></span>
- </div>
- <div class="form-group">
- <div class="table">
- <table>
- <tr>
- @{
- int cnt = 0;
- foreach (var cat in Model.
-     AssignedCategoryDataList)
- {
- if (cnt++ % 3 == 0)
-{
-@:</tr><tr>
-}
-@:<td>
- <input type="checkbox"
- name="selectedCategories"
-value="@cat.CategoryID"
-@(Html.Raw(cat.Assigned ?
-"checked=\"checked\"" : "")) />
- @cat.CategoryID @: @cat.Name
- @:</td>
- }
- @:</tr>
- }
- </table>
- </div>
- </div>
- <div class="form-group">
- <input type="submit" value="Save" class="btn btn-primary" />
- </div>
+            <div class="form-group">
+                <label asp-for="Book.PublisherID" class="control-label"></label>
+                <select asp-for="Book.PublisherID" class="form-control" asp-items="ViewBag.PublisherID"></select>
+                <span asp-validation-for="Book.PublisherID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="table">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                foreach (var cat in Model.AssignedCategoryDataList)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td>
+                                    <input type="checkbox"
+                                        name="selectedCategories"
+                                        value="@cat.CategoryID"
+                                        @(Html.Raw(cat.Assigned ?
+                                        "checked=\"checked\"" : "")) />
+                                    @cat.CategoryID @: @cat.Name
+                                    @:</td>
+                                }
+                                @:</tr>
+                            }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<hr />
