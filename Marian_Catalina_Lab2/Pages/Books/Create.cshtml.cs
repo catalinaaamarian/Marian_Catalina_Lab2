@@ -22,16 +22,10 @@ namespace Marian_Catalina_Lab2.Pages.Books
 
         public IActionResult OnGet()
         {
-            /* var authorList = _context.Author.Select(x => new
-             {
-             x.ID,
-             FullName = x.LastName + " " + x.FirstName
-             });
-            */
-            // daca am adaugat o proprietate FullName in clasa Author
+            AuthorList = _context.Author.Select(x => $"{x.ID} - {x.LastName} {x.FirstName}").ToList();
+
             ViewData["AuthorID"] = new SelectList(AuthorList, "ID", "FullName");
-            ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID",
-           "PublisherName");
+            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID","PublisherName");
 
             var book = new Book();
             book.BookCategories = new List<BookCategory>();
@@ -65,4 +59,4 @@ namespace Marian_Catalina_Lab2.Pages.Books
 }
 
 
-// To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+
