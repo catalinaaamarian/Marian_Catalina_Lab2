@@ -34,6 +34,9 @@ namespace Marian_Catalina_Lab2.Controllers
             var book = await _context.Book
                 .Include(b => b.Genre)
                 .Include(b => b.Authors)
+                .Include(b => b.Orders)
+                    .ThenInclude(o => o.Customer)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (book == null)
@@ -53,13 +56,21 @@ namespace Marian_Catalina_Lab2.Controllers
         // POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Author,Price,GenreID,AuthorID")] Book book)
+        public async Task<IActionResult> Create([Bind("Title,Price,GenreID,AuthorID")] Book book)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(book);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("",
+                    "Unable to save changes. Try again, and if the problem persists contact admin.");
             }
 
             ViewData["GenreID"] = new SelectList(_context.Genre, "ID", "Name", book.GenreID);
@@ -85,9 +96,10 @@ namespace Marian_Catalina_Lab2.Controllers
         }
 
         // POST: Books/Edit/5
+        // Aceasta este metoda care va fi modificată în PASUL 8 din laborator
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Author,Price,GenreID,AuthorID")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Price,GenreID,AuthorID")] Book book)
         {
             if (id != book.ID)
                 return NotFound();
@@ -103,8 +115,8 @@ namespace Marian_Catalina_Lab2.Controllers
                 {
                     if (!_context.Book.Any(e => e.ID == book.ID))
                         return NotFound();
-
-                    throw;
+                    else
+                        throw;
                 }
 
                 return RedirectToAction(nameof(Index));

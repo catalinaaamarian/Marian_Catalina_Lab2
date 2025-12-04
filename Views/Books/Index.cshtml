@@ -1,53 +1,63 @@
-﻿@model IEnumerable<Marian_Catalina_Lab2.Models.Book>
+﻿@model IEnumerable<Marian_Catalina_Lab2.Models.BookViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Books";
 }
 
-<h1>Index</h1>
+<h1>Books</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by title:
+            <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="form-control-sm" />
+            <input type="submit" value="Search" class="btn btn-secondary btn-sm" /> |
+            <a asp-action="Index" class="btn btn-link">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">
+                    @Html.DisplayNameFor(model => model.Title)
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                @Html.DisplayNameFor(model => model.FullName)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">
+                    @Html.DisplayNameFor(model => model.Price)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genre)
-            </th>
+
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre.ID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.FullName</td>
+                <td>@item.Price</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
